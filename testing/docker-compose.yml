@@ -1,9 +1,7 @@
 services:
-
   k6: 
     build: 
-      context: . 
-      dockerfile: ../Dockerfile
+      context: ../ 
     image: eftechcombr/xk6-opentelemetry:latest 
     restart: no 
 
@@ -37,7 +35,7 @@ services:
       - 172.20.0.10
   
   metrics:
-    image: localhost/xk6-opentelemetry:latest
+    image: eftechcombr/xk6-opentelemetry:latest
     command:
       - run
       - /scripts/test-metrics.js
@@ -50,7 +48,7 @@ services:
       - 172.20.0.10
 
   logs:
-    image: localhost/xk6-opentelemetry:latest
+    image: eftechcombr/xk6-opentelemetry:latest
     command:
       - run
       - /scripts/test-logs.js
@@ -64,7 +62,7 @@ services:
 
 
   traces:
-    image: localhost/xk6-opentelemetry:latest
+    image: eftechcombr/xk6-opentelemetry:latest
     command:
       - run
       - /scripts/test-traces.js
