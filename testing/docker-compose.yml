@@ -4,20 +4,24 @@ services:
     build: 
       context: . 
       dockerfile: ../Dockerfile
-    image: localhost/xk6-opentelemetry:latest 
+    image: eftechcombr/xk6-opentelemetry:latest 
     restart: no 
 
-
-  redpanda:
-    image: redpandadata/redpanda:latest
-    command: redpanda start --smp 1 --memory 1G --reserve-memory 0M --node-id 0 --check=false --kafka-addr INSIDE://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092 --advertise-kafka-addr INSIDE://broker:29092,OUTSIDE://broker:9092
-    container_name: broker
-    restart: always
+  kafka:
+    image: 'bitnami/kafka:latest'
+    environment:
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
     ports:
       - "9092:9092"
-      - "29092:29092"
+    restart: always  
     dns: 
       - 172.20.0.10
+
       
   collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -28,7 +32,7 @@ services:
       - ./otel-collector.yaml/:/etc/otel/config.yaml
     restart: always
     depends_on:
-      - redpanda 
+      - kafka 
     dns: 
       - 172.20.0.10
   
@@ -41,7 +45,7 @@ services:
       - ../examples/:/scripts/  
     restart: always
     depends_on:
-      - redpanda 
+      - kafka 
     dns: 
       - 172.20.0.10
 
@@ -54,7 +58,7 @@ services:
       - ../examples/:/scripts/  
     restart: always
     depends_on:
-      - redpanda 
+      - kafka 
     dns: 
       - 172.20.0.10
 
@@ -68,6 +72,6 @@ services:
       - ../examples/:/scripts/  
     restart: always
     depends_on:
-      - redpanda 
+      - kafka 
     dns: 
       - 172.20.0.10      

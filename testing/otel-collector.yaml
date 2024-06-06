@@ -1,23 +1,23 @@
 receivers:
   kafka/logs:
     brokers:
-      - broker:29092
+      - kafka:9092
     group_id: collector-logs
     topic: otel_logs
   kafka/metrics:
     brokers:
-      - broker:29092
+      - kafka:9092
     group_id: collector-metrics
     topic: otel_metrics
   kafka/traces:
     brokers:
-      - broker:29092
+      - kafka:9092
     group_id: collector-traces
     topic: otel_traces
 
 exporters:
   otlp:
-    endpoint: http://monitoring-otel-opentelemetry-collector.monitoring.svc.cluster.local:4317
+    endpoint: http://monitoring-otel-opentelemetry-collector.monitoring.svc.cluster.local:4318
     tls:
       insecure: true
   logging:

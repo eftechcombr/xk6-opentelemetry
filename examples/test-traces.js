@@ -5,7 +5,7 @@ import {
     SCHEMA_TYPE_BYTES,
 } from 'k6/x/kafka';
 
-const brokers = ["broker:9092"]
+const brokers = ["kafka:9092"]
 const topic = "otel_traces"
 const schemaRegistry = new SchemaRegistry();
 const producer = new Writer({

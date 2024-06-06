@@ -9,7 +9,7 @@ import {
     randomIntBetween,
 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
-const brokers = ["broker:9092"]
+const brokers = ["kafka:9092"]
 const topic = "otel_metrics"
 const schemaRegistry = new SchemaRegistry();
 const producer = new Writer({
